@@ -100,5 +100,10 @@ module.exports = function(grunt) {
       grunt.task.run(['cssmin', 'uglify']);
     }
   });
-  grunt.registerTask('deploy', ['exec:add', 'exec:commit', 'exec:push']);
+  grunt.registerTask('deploy', function (releaseType) {
+    if (!releaseType) {
+      releaseType = 'patch';
+    }
+    grunt.task.run(['version::' + releaseType, 'exec:add', 'exec:commit', 'exec:push']);
+  });
 };
