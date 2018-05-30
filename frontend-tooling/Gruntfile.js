@@ -4,6 +4,7 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
     // Config will go here
     cssmin: {
       all: {
@@ -67,7 +68,7 @@ module.exports = function(grunt) {
     },
     exec: {
       add: 'git add .', // Add all changed files in this directory to the commit
-      commit: 'git commit -am "Releasing"', // Actually make the commit
+      commit: 'git commit -am "Releasing <%= pkg.version %>"', // Actually make the commit
       push: 'git push' // Send our changes to the repository
     },
     // ... Rest of the config
