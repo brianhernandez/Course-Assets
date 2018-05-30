@@ -1,11 +1,11 @@
-module.exports = function(grunt) {
 
-  // Project configuration.
+
+module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
+  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    // Config will go here
     cssmin: {
       all: {
         files: {
@@ -16,16 +16,32 @@ module.exports = function(grunt) {
     uglify: {
       all: {
         files: {
-          'dest/app.min.js': ['js/*.js']
+          'dest/app.js': ['js/*.js']
         }
       }
     },
     htmllint: {
-      all: ['*.html']
+      all: ['html/*.html']
     },
     csslint: {
       all: {
         src: ['styles/*.css']
+      }
+    },
+    jshint: {
+      all: ['Gruntfile.js', 'js/*.js'],
+      options: {
+        asi: true, // Don't worry about missing semicolons
+        undef: true, // Warn about undeclared globals
+        force: true,
+        globals: { // Pass in a list of globals we don't want warnings about
+          module: true,
+          require: true,
+          console: true
+        }
+      },
+      dev: {
+        force: true
       }
     },
     sass: {
@@ -35,50 +51,19 @@ module.exports = function(grunt) {
         }
       }
     },
-    jshint: {
-      all: ['Gruntfile.js', 'js/*.js'],
-      options: { /* ... */ },
-      // Note the new target here
-      dev: {
-        force: true
-      }
-    },
-    jasmine: {
-      all: {
-        src: ['js/*.js'],
-        options: {
-          specs: ['spec/**/*Spec.js']
-        }
-      }
-    },
-    imagemin: {
-      dynamic: {
-        files: [{
-          expand: true,                  // Enable globbing
-          src: ['img/*.{png,jpg,gif}'],  // Glob patterns to match
-          dest: 'dest/'                  // Destination directory
-        }]
-      }
-    },
-    version: {
-      src: ['package.json', 'index.html'],
+    postcss: {
       options: {
-        prefix: '[\\?]?version[\\\'"]?[=:]\\s*[\\\'"]?'
+        map: true,
+        processors: [
+          require('autoprefixer')({browsers: 'last 2 versions'}),
+          require('cssnano')()
+        ]
+      },
+      dist: {
+        src: 'styles/style.css',
+        dest: 'dest/style.css'
       }
     },
-    exec: {
-      add: 'git add .', // Add all changed files in this directory to the commit
-      commit: {
-        cmd: function () {
-          var oldPkg = this.config('pkg') // Get the pkg property from our config
-            , pkg = grunt.file.readJSON('package.json') // Read updated package.json
-            , cmd = 'git commit -am "Updating from ' + oldPkg.version + ' to ' + pkg.version + '"';
-          return cmd;
-        }
-      }, // Actually make the commit
-      push: 'git push' // Send our changes to the repository
-    },
-    // ... Rest of the config
     watch: {
       scripts: {
         files: ['js/*.js'],
@@ -94,13 +79,43 @@ module.exports = function(grunt) {
           livereload: true
         }
       }
+    },
+    jasmine: {
+      all: {
+        src: ['js/*.js'],
+        options: {
+          specs: ['spec/**/*Spec.js']        }
+      }
+    },
+    imagemin: {
+      dynamic: {
+        files: [{
+          expand: true,
+          src: ['img/*.{png,jpg,gif}'],
+          dest: 'dest/'
+        }]
+      }
+    },
+    version: {
+      src: ['package.json', 'index.html'],
+      options: {
+        prefix: '[\\?]?version[\\\'"]?[=:]\\s*[\\\'"]?'
+      }
+    },
+    exec: {
+      add: 'git add .', // Add all changed files to the commit
+      commit: {
+          cmd: function () {
+            var oldPkg = this.config('pkg') // Get the pkg property from our config
+              , pkg = grunt.file.readJSON('package.json')
+              , cmd = 'git commit -am "Updating from ' + oldPkg.version + ' to ' + pkg.version + '"';
+            return cmd;
+        }
+      },
+      push: 'git push' // Send our changes to the repository
     }
   });
 
-  // Default task(s).
-  grunt.registerTask('default', function () {
-    console.log('Grunt has run');
-  });
   grunt.registerTask('minify', function (full) {
     if (full) {
       grunt.task.run(['cssmin', 'uglify', 'imagemin']);
@@ -108,10 +123,22 @@ module.exports = function(grunt) {
       grunt.task.run(['cssmin', 'uglify']);
     }
   });
+
+  grunt.registerTask('css', ['sass', 'postcss']);
+
+  grunt.registerTask('build', ['sass', 'csslint', 'htmllint', 'jshint', 'uglify', 'imagemin', 'postcss']);
+
   grunt.registerTask('deploy', function (releaseType) {
     if (!releaseType) {
       releaseType = 'patch';
     }
+    grunt.task.run(['build']);
     grunt.task.run(['version::' + releaseType, 'exec:add', 'exec:commit', 'exec:push']);
   });
+
+  // Default task(s).
+  grunt.registerTask('default', function () {
+    console.log('Grunt has run');
+  });
 };
+

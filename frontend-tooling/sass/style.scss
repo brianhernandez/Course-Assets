@@ -4,11 +4,13 @@ $title-color: #36CF0E;
 .top-element {
     border: 1px solid $border-color;
     margin: 1rem;
+    display: grid;
 
     .title {
         color: $title-color;
         font-size: 2rem;
         font-weight: bold;
+        display: flex;
 
         span {
             border-bottom: 1px solid $border-color;

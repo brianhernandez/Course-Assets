@@ -1,10 +1,12 @@
 .top-element {
   border: 1px solid #999999;
-  margin: 1rem; }
+  margin: 1rem;
+  display: grid; }
   .top-element .title {
     color: #36CF0E;
     font-size: 2rem;
-    font-weight: bold; }
+    font-weight: bold;
+    display: flex; }
     .top-element .title span {
       border-bottom: 1px solid #999999;
       color: #2a9f0b;

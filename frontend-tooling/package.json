@@ -1,6 +1,6 @@
 {
   "name": "frontend-tooling",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Default description here.",
   "main": "index.js",
   "scripts": {
@@ -19,11 +19,16 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^3.0.0",
     "grunt-html": "^9.0.0",
+    "grunt-postcss": "^0.9.0",
     "grunt-sass": "^2.1.0",
     "grunt-version": "^1.2.1",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.9.4",
     "gulp-uglify": "^3.0.0",
     "load-grunt-tasks": "^4.0.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^8.5.2",
+    "cssnano": "^3.10.0"
   }
 }
