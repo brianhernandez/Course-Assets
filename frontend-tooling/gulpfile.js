@@ -58,18 +58,16 @@ gulp.task('jasmine', function () {
     .pipe(jasmine());
 });
 
-gulp.task('deploy', ['exec'], function(){
+gulp.task('deploy', ['bump', 'gitAdd', 'gitCommit'], function(){
+});
+
+gulp.task('bump', function(){
   gulp.src(['./package.json', './index.html'])
   .pipe(bump())
   .pipe(gulp.dest('.'))
 });
 
-// gulp.task('exec', function() {
-//   exec('git add .');
-//   exec('git commit -m "Another commit."');
-// });
-
-gulp.task('task1', function (cb) {
+gulp.task('gitAdd', ['bump'], function (cb) {
   exec('git add .', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
@@ -77,14 +75,13 @@ gulp.task('task1', function (cb) {
   });
 });
 
-gulp.task('task2', function (cb) {
+gulp.task('gitCommit', ['gitAdd'], function (cb) {
   exec('git commit -m "Another commit."', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
   });
 });
-
 
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
