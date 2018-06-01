@@ -12,8 +12,8 @@ var bump = require('gulp-bump');
 var exec = require('child_process').exec;
 var fs = require('fs');
 
-var getOldPackageJson;
-var getNewPackageJson;
+var getOldPackageJsonVersion;
+var getNewPackageJsonVersion;
 
 gulp.task('minify-css', function() {
   return gulp.src('styles/app.css')
@@ -63,8 +63,10 @@ gulp.task('jasmine', function () {
 });
 
 gulp.task('bump', function(){
-  getOldPackageJson = function () {
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  var getOldPackageJson = function () {
+    getOldPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+    // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    return getOldPackageJsonVersion;
   };
 
   gulp.src(['./package.json', './index.html'])
@@ -85,11 +87,13 @@ gulp.task('gitAdd', ['bump'], function (cb) {
 });
 
 gulp.task('gitCommit', ['gitAdd'], function (cb) {
-  getNewPackageJson = function () {
-    return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  var getNewPackageJson = function () {
+    getNewPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+    // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    return getNewPackageJsonVersion;
   };
 
-  exec('git commit -m "Committing changes from version: ' + getOldPackageJson().version + ' to version: ' + getNewPackageJson().version + '."' , function (err, stdout, stderr) {
+  exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
