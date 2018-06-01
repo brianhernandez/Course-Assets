@@ -63,13 +63,6 @@ gulp.task('jasmine', function () {
     .pipe(jasmine());
 });
 
-// gulp.task('setPackageVersionRecord', function() {
-//   var getPackageJson = function() {
-//     projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-//     return projectVersion;
-//   }
-// });
-
 var getPackageJson = function() {
   projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
   return projectVersion;
@@ -81,8 +74,6 @@ gulp.task('bump', function(){
   gulp.src(['./package.json', './index.html'])
   .pipe(bump())
   .pipe(gulp.dest('.'))
-
-  // console.log(getOldPackageJson().version);
 });
 
 gulp.task('gitAdd', ['bump'], function (cb) {
@@ -98,39 +89,12 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
   exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
-    // cb(err);
+    cb(err);
   });
 });
 
 gulp.task('deploy', ['gitCommit'], function(){
 });
-
-// gulp.task('deploy', function() {
-//   var getPackageJson = function() {
-//     projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-//     return projectVersion;
-//   }
-//   oldProjectVersion = getPackageJson();
-
-//   gulp.src(['./package.json', './index.html'])
-//   .pipe(bump())
-//   .pipe(gulp.dest('.'))
-//   .on('finish', function() {
-//     exec('git add .', function (err, stdout, stderr) {
-//     console.log(stdout);
-//     console.log(stderr);
-//     // cb(err);
-//   });
-//   })
-//   .on('finish', function() {
-//     newProjectVersion = getPackageJson();
-//     exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
-//     console.log(stdout);
-//     console.log(stderr);
-//     // cb(err);
-//   });
-//   })
-// });
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
   //console.log('[' + logLevel + ']' + ' ' + message);
