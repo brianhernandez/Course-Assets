@@ -89,6 +89,7 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
   var getNewPackageJson = function () {
     getNewPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
     // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+    console.log('This is from gitCommit: ' + getNewPackageJsonVersion);
     return getNewPackageJsonVersion;
   };
 
