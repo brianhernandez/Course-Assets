@@ -61,16 +61,28 @@ gulp.task('jasmine', function () {
 gulp.task('deploy', ['exec'], function(){
   gulp.src(['./package.json', './index.html'])
   .pipe(bump())
-  .pipe(gulp.dest('.'));
+  .pipe(gulp.dest('.'))
 });
 
-gulp.task('exec', function (err, stdout, stderr) {
-  exec('git add .');
-  console.log(stdout);
-  console.log(stderr);
-  exec('git commit -m "Another commit."');
-  console.log(stdout);
-  console.log(stderr);
+// gulp.task('exec', function() {
+//   exec('git add .');
+//   exec('git commit -m "Another commit."');
+// });
+
+gulp.task('task1', function (cb) {
+  exec('git add .', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('task2', function (cb) {
+  exec('git commit -m "Another commit."', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
 });
 
 
