@@ -95,7 +95,7 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
   getNewPackageJson().on('finish', exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
-    cb(err);
+    // cb(err);
   }));
 
 });
