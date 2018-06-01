@@ -11,6 +11,7 @@ var jasmine = require('gulp-jasmine-phantom');
 var bump = require('gulp-bump');
 var exec = require('child_process').exec;
 var fs = require('fs');
+const bumpArg = require('yargs');
 
 var projectVersion;
 var oldProjectVersion;
@@ -70,9 +71,10 @@ var getPackageJson = function() {
 
 gulp.task('bump', function(){
   oldProjectVersion = getPackageJson();
+  console.log(bumpArg.type);
 
   gulp.src(['./package.json', './index.html'])
-  .pipe(bump())
+  .pipe(bump({type: bumpArg.type}))
   .pipe(gulp.dest('.'))
 });
 
@@ -94,6 +96,7 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
 });
 
 gulp.task('deploy', ['gitCommit'], function(){
+  console.log(bumpArg.type);
 });
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
