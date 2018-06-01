@@ -82,7 +82,6 @@ gulp.task('gitAdd', ['bump'], function (cb) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
-    console.log('This is from gitAdd task: ' + cb);
   });
 });
 
