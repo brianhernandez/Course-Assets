@@ -12,6 +12,9 @@ var bump = require('gulp-bump');
 var exec = require('child_process').exec;
 var fs = require('fs');
 
+var getOldPackageJson;
+var getNewPackageJson;
+
 gulp.task('minify-css', function() {
   return gulp.src('styles/app.css')
     .pipe(cleanCSS())
@@ -60,7 +63,7 @@ gulp.task('jasmine', function () {
 });
 
 gulp.task('bump', function(){
-  var getOldPackageJson = function () {
+  getOldPackageJson = function () {
     return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
   };
 
@@ -82,7 +85,11 @@ gulp.task('gitAdd', ['bump'], function (cb) {
 });
 
 gulp.task('gitCommit', ['gitAdd'], function (cb) {
-  exec('git commit -m "Another commit."', function (err, stdout, stderr) {
+  getNewPackageJson = function () {
+    return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  };
+
+  exec('git commit -m "Committing changes from version: ' + getOldPackageJson().version + ' to version: ' + getNewPackageJson().version + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
