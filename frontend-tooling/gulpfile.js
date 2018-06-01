@@ -10,6 +10,7 @@ var smushit = require('gulp-smushit');
 var jasmine = require('gulp-jasmine-phantom');
 var bump = require('gulp-bump');
 var exec = require('child_process').exec;
+var fs = require('fs');
 
 gulp.task('minify-css', function() {
   return gulp.src('styles/app.css')
@@ -58,13 +59,17 @@ gulp.task('jasmine', function () {
     .pipe(jasmine());
 });
 
-gulp.task('deploy', ['bump', 'gitAdd', 'gitCommit'], function(){
-});
-
 gulp.task('bump', function(){
+  var getOldPackageJson = function () {
+    return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+  };
+
   gulp.src(['./package.json', './index.html'])
   .pipe(bump())
   .pipe(gulp.dest('.'))
+
+  console.log(getOldPackageJson().version);
+  return getOldPackageJson().version;
 });
 
 gulp.task('gitAdd', ['bump'], function (cb) {
@@ -72,6 +77,7 @@ gulp.task('gitAdd', ['bump'], function (cb) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
+    console.log('This is from gitAdd task: ' + cb);
   });
 });
 
@@ -83,6 +89,8 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
   });
 });
 
+gulp.task('deploy', ['bump', 'gitAdd', 'gitCommit'], function(){
+});
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
   //console.log('[' + logLevel + ']' + ' ' + message);
