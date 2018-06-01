@@ -97,6 +97,7 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
 
 gulp.task('deploy', ['gitCommit'], function(){
   console.log(bumpArg.type);
+  console.log(process.argv);
 });
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
