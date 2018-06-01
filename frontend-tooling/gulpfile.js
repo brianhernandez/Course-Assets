@@ -77,20 +77,20 @@ gulp.task('bump', function(){
 });
 
 gulp.task('gitAdd', ['bump'], function (cb) {
-  exec('git add .', function (err, stdout, stderr) {
+  console.log(exec('git add .', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
-  });
+  }));
 });
 
 gulp.task('gitCommit', ['gitAdd'], function (cb) {
   newProjectVersion = getPackageJson();
-  exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
+  console.log(exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
-  });
+  }));
 });
 
 gulp.task('deploy', ['gitCommit'], function(){
