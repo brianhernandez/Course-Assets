@@ -73,8 +73,7 @@ gulp.task('bump', function(){
   .pipe(bump())
   .pipe(gulp.dest('.'))
 
-  console.log(getOldPackageJson().version);
-  return getOldPackageJson().version;
+  // console.log(getOldPackageJson().version);
 });
 
 gulp.task('gitAdd', ['bump'], function (cb) {
@@ -89,14 +88,15 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
   var getNewPackageJson = function () {
     getNewPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
     // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    console.log('This is from gitCommit: ' + getNewPackageJsonVersion);
+    // console.log('This is from gitCommit: ' + getNewPackageJsonVersion);
     return getNewPackageJsonVersion;
   };
+  // setTimeout(getNewPackageJson(), 1000);
   getNewPackageJson();
   exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
-    cb(err);
+    // cb(err);
   });
 });
 
