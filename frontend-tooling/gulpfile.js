@@ -12,8 +12,9 @@ var bump = require('gulp-bump');
 var exec = require('child_process').exec;
 var fs = require('fs');
 
-var getOldPackageJsonVersion;
-var getNewPackageJsonVersion;
+var projectVersion;
+var oldProjectVersion;
+var newProjectVersion;
 
 gulp.task('minify-css', function() {
   return gulp.src('styles/app.css')
@@ -62,12 +63,20 @@ gulp.task('jasmine', function () {
     .pipe(jasmine());
 });
 
+// gulp.task('setPackageVersionRecord', function() {
+//   var getPackageJson = function() {
+//     projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+//     return projectVersion;
+//   }
+// });
+
+var getPackageJson = function() {
+  projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  return projectVersion;
+}
+
 gulp.task('bump', function(){
-  var getOldPackageJson = function () {
-    getOldPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-    // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    return getOldPackageJsonVersion;
-  };
+  oldProjectVersion = getPackageJson();
 
   gulp.src(['./package.json', './index.html'])
   .pipe(bump())
@@ -85,23 +94,43 @@ gulp.task('gitAdd', ['bump'], function (cb) {
 });
 
 gulp.task('gitCommit', ['gitAdd'], function (cb) {
-  var getNewPackageJson = function () {
-    getNewPackageJsonVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-    // return JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-    // console.log('This is from gitCommit: ' + getNewPackageJsonVersion);
-    return getNewPackageJsonVersion;
-  };
-  // setTimeout(getNewPackageJson(), 1000);
-  getNewPackageJson();
-  exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
+  newProjectVersion = getPackageJson();
+  exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     // cb(err);
   });
 });
 
-gulp.task('deploy', ['bump', 'gitAdd', 'gitCommit'], function(){
+gulp.task('deploy', ['gitCommit'], function(){
 });
+
+// gulp.task('deploy', function() {
+//   var getPackageJson = function() {
+//     projectVersion = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+//     return projectVersion;
+//   }
+//   oldProjectVersion = getPackageJson();
+
+//   gulp.src(['./package.json', './index.html'])
+//   .pipe(bump())
+//   .pipe(gulp.dest('.'))
+//   .on('finish', function() {
+//     exec('git add .', function (err, stdout, stderr) {
+//     console.log(stdout);
+//     console.log(stderr);
+//     // cb(err);
+//   });
+//   })
+//   .on('finish', function() {
+//     newProjectVersion = getPackageJson();
+//     exec('git commit -m "Committing changes from version: ' + oldProjectVersion + ' to version: ' + newProjectVersion + '."' , function (err, stdout, stderr) {
+//     console.log(stdout);
+//     console.log(stderr);
+//     // cb(err);
+//   });
+//   })
+// });
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {
   //console.log('[' + logLevel + ']' + ' ' + message);
