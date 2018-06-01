@@ -10,7 +10,7 @@ $title-color: #36CF0E;
         color: $title-color;
         font-size: 2rem;
         font-weight: bold;
-        display: flex;
+        display: grid;
 
         span {
             border-bottom: 1px solid $border-color;

@@ -1,10 +1,3 @@
-myArg = true;
-
-var fn = function (arg) {
-  arg = arg || myArg;
-  return arg;
-};
-
 (function (w) {
   w.app = {
     // Message to display

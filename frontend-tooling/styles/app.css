@@ -1,19 +1,46 @@
-/* Top level element of our component */
-/*.top-element {*/
-  /* Primary color for branding */
-  /*border: 1px solid #999999;
-  margin: 1rem;
-}*/
+#main p {
+  color: #00ff00;
+  width: 97%;
+}
 
-/*.top-element .title {
-  color: #3F3F3F;
+#main p .redbox {
+  background-color: #ff0000;
+  color: #000000;
+}
+
+#main {
+  width: 97%;
+}
+
+#main p,
+#main div {
+  font-size: 2em;
+}
+
+#main p a,
+#main div a {
+  font-weight: bold;
+}
+
+#main pre {
+  font-size: 3em;
+}
+.top-element {
+  border: 1px solid #999999;
+  margin: 1rem;
+  display: grid;
+}
+
+.top-element .title {
+  color: #36CF0E;
   font-size: 2rem;
   font-weight: bold;
-}*/
+  display: grid;
+}
 
-/* Used as subtitle */
-/*.top-element .title span {
+.top-element .title span {
   border-bottom: 1px solid #999999;
-  color: #262626;
+  color: #2a9f0b;
   font-size: 1rem;
-  font-weight: normal;*/
+  font-weight: normal;
+}
