@@ -92,12 +92,12 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
     console.log('This is from gitCommit: ' + getNewPackageJsonVersion);
     return getNewPackageJsonVersion;
   };
-
-  exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
+  getNewPackageJson().on('finish', exec('git commit -m "Committing changes from version: ' + getOldPackageJsonVersion + ' to version: ' + getNewPackageJsonVersion + '."' , function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
-  });
+  }));
+
 });
 
 gulp.task('deploy', ['bump', 'gitAdd', 'gitCommit'], function(){

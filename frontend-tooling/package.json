@@ -1,6 +1,6 @@
 {
   "name": "frontend-tooling",
-  "version": "1.3.15",
+  "version": "1.3.16",
   "description": "Default description here.",
   "main": "index.js",
   "scripts": {
