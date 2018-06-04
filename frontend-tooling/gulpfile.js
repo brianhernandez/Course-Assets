@@ -5,25 +5,26 @@ var uglify = require('gulp-uglify');
 var jshint = require('gulp-jshint');
 var sass = require('gulp-sass');
 var concatCSS = require('gulp-concat-css');
+var csslint = require('gulp-csslint');
 var concat = require('gulp-concat');
 var smushit = require('gulp-smushit');
 var jasmine = require('gulp-jasmine-phantom');
 var bump = require('gulp-bump');
 var exec = require('child_process').exec;
 var fs = require('fs');
-const bumpArg = require('yargs');
+var bumpArg = require('yargs').bumpArg;
 
 var projectVersion;
 var oldProjectVersion;
 var newProjectVersion;
 
-gulp.task('minify-css', function() {
+gulp.task('minify-css', ['concatCSS'], function() {
   return gulp.src('styles/app.css')
     .pipe(cleanCSS())
     .pipe(gulp.dest('dest'));
 });
 
-gulp.task('uglify', function() {
+gulp.task('uglify', ['concatJS'], function() {
   return gulp.src('js/app.js')
     .pipe(uglify())
     .pipe(gulp.dest('dest'));
@@ -41,10 +42,16 @@ gulp.task('sass', function(){
     .pipe(gulp.dest('styles'))
 });
 
-gulp.task('concatCSS', function () {
+gulp.task('concatCSS', ['sass'], function () {
   return gulp.src('styles/*.css')
     .pipe(concatCSS("styles/app.css"))
     .pipe(gulp.dest('.'));
+});
+
+gulp.task('csslint', ['sass'], function() {
+  gulp.src('styles/*.css')
+    .pipe(csslint())
+    .pipe(csslint.formatter());
 });
 
 gulp.task('concatJS', function() {
@@ -71,11 +78,22 @@ var getPackageJson = function() {
 
 gulp.task('bump', function(){
   oldProjectVersion = getPackageJson();
-  console.log(bumpArg.type);
+  // console.log(bumpArg.type);
+  var type = 'minor';
+
+  if (bumpArg.type !== undefined) {
+    type = bumpArg.type;
+  }
+
+  // if ( bumpArg.type == 'minor' ) {
+  //   console.log('type is minor');
+  // } else {
+  //   console.log('type is not minor');
+  // }
 
   gulp.src(['./package.json', './index.html'])
-  .pipe(bump({type: bumpArg.type}))
-  .pipe(gulp.dest('.'))
+  .pipe(bump(/*{type: type}*/))
+  .pipe(gulp.dest('.'));
 });
 
 gulp.task('gitAdd', ['bump'], function (cb) {
@@ -96,8 +114,12 @@ gulp.task('gitCommit', ['gitAdd'], function (cb) {
 });
 
 gulp.task('deploy', ['gitCommit'], function(){
-  console.log(bumpArg.type);
-  console.log(process.argv);
+  // console.log(bumpArg.type);
+  // console.log(process.argv);
+});
+
+gulp.task('build', ['csslint', 'minify-css', 'uglify', 'jshint', 'smushit', 'jasmine'], function() {
+  console.log("Build sequence completed.");
 });
 
 gulp.task('default', ['uglify', 'minify-css'], function(logLevel, message) {

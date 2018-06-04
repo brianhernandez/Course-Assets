@@ -1,6 +1,6 @@
 {
   "name": "frontend-tooling",
-  "version": "1.3.35",
+  "version": "1.4.0",
   "description": "Default description here.",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "gulp-clean-css": "^3.9.4",
     "gulp-concat": "^2.6.1",
     "gulp-concat-css": "^3.1.0",
+    "gulp-csslint": "^1.0.1",
     "gulp-exec": "^3.0.1",
     "gulp-jasmine-phantom": "^3.0.0",
     "gulp-jshint": "^2.1.0",
