@@ -1,0 +1,40 @@
+* { box-sizing: border-box; }
+
+#users .user {
+  box-shadow: #1a1a1a 0 0 5px 0;
+  display: block;
+  float: left;
+  margin: 1% 1%;
+  padding: 1rem;
+  width: 18%;
+}
+
+#users .user .name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+#users .user .address {
+  color: #1a1a1a;
+}
+
+#users .user .address.missing {
+  font-style: italic;
+}
+
+.companies {
+  padding-left: 0;
+}
+
+.companies .company {
+  display: inline-block;
+  border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  list-style: none;
+}
+
+.companies .company a {
+  text-decoration: none;
+}

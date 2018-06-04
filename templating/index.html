@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Templating</title>
+  <link rel="stylesheet" type="text/css" href="users.css">
+  <script id="users-template" type="text/x-handlebars-template">
+    <h1>Companies</h1>
+    {{#companyList users company="company.name"}}
+      <a href="{{@website}}">{{@company}}</a>
+    {{/companyList}}
+    <h1>Users</h1>
+    {{#each users}}
+    <div class="user">
+      {{> userHeader total=../users.length}}
+      {{> address address}}
+    </div>
+    {{/each}}
+  </script>
+  <script id="address-template" type="text/x-handlebars-template">
+    {{#if this}}
+    <div class="address">
+      <p class="street">{{suite}} {{street}}</p>
+      <p class="city-zip">{{city}}, {{zipcode}}</p>
+    </div>
+    {{else}}
+    <div class="address missing">
+      <p>No address specified</p>
+      <p>Please update the record</p>
+    </div>
+    {{/if}}
+  </script>
+</head>
+<body>
+<div id="users">
+</div>
+<script type="text/javascript" src="bower_components/zepto/zepto.min.js"></script>
+<script type="text/javascript" src="bower_components/handlebars/handlebars.min.js"></script>
+<script type="text/javascript" src="templates.js"></script>
+</body>
+</html>

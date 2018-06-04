@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Take our quiz!</title>
+  <link rel="stylesheet" type="text/css" href="bower_components/pure/build/pure-min.css">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    .container {
+      width: 1000px;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="view-content"></div>
+</div>
+<script type="text/javascript" src="bower_components/fetch/fetch.js"></script>
+<script type="text/javascript" src="bower_components/handlebars/handlebars.js"></script>
+<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+
+<script type="text/javascript" src="script.js"></script>
+
+<script id="welcome-template" type="text/x-handlebars-template">
+  <h1>Welcome to QuizTaker 3000!</h1>
+  <h2>Select a quiz!</h2>
+  <div class="pure-g">
+    {{#each quizzes}}
+    <div class="pure-u-1-2 quiz" data-id="{{id}}">
+      <h3>{{title}}</h3>
+    </div>
+    {{/each}}
+  </div>
+</script>
+
+<script id="quiz-template" type="text/x-handlebars-template">
+  <h2>{{quiz.title}}</h2>
+  <form name="quiz">
+    {{#each questions}}
+    <div class="question{{#if image}} has-image{{/if}}">
+      <h3>{{text}}</h3>
+      {{#if image}}
+      <div class="image">
+        <img src="{{image}}">
+      </div>
+      {{/if}}
+      <div class="answers">
+        {{#each answers}}
+        <label>
+          <input type="radio" name="answer-{{../id}}" value="{{.}}">
+          {{.}}
+        </label>
+        {{/each}}
+      </div>
+    </div>
+  {{/each}}
+  </form>
+  <button id="submit-quiz">Submit</button>
+</script>
+
+<script id="results-template" type="text/x-handlebars-template">
+  <h2>You scored a {{percent}}% on "{{quiz.title}}"!</h2>
+  {{#each questions}}
+  <div class="question{{#if image}} has-image{{/if}}">
+    <h3>{{text}}</h3>
+    {{#if image}}
+    <div class="image">
+      <img src="{{image}}">
+    </div>
+    {{/if}}
+    <div class="answers">
+      <p>Correct Answer: {{correctAnswer}}</p>
+      {{#if correct}}
+      <p>You were right!</p>
+      {{else}}
+      <p>You answered: {{userAnswer.answer}}</p>
+      {{/if}}
+    </div>
+  </div>
+  {{/each}}
+</script>
+</body>
+</html>

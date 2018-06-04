@@ -81,9 +81,9 @@ gulp.task('bump', function(){
   // console.log(bumpArg.type);
   var type = 'minor';
 
-  if (bumpArg.type !== undefined) {
-    type = bumpArg.type;
-  }
+  // if (bumpArg.type !== undefined) {
+  //   type = bumpArg.type;
+  // }
 
   // if ( bumpArg.type == 'minor' ) {
   //   console.log('type is minor');

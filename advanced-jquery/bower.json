@@ -1,0 +1,22 @@
+{
+  "name": "advanced-jquery",
+  "homepage": "https://github.com/moderndeveloper-students/Course-Assets",
+  "authors": [
+    "Alex Vanston <alex@mrvdot.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "moment": "momentjs#^2.18.1"
+  }
+}

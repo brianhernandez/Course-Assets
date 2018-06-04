@@ -1,5 +1,3 @@
-
-
 module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
@@ -84,7 +82,8 @@ module.exports = function(grunt) {
       all: {
         src: ['js/*.js'],
         options: {
-          specs: ['spec/**/*Spec.js']        }
+          specs: ['spec/**/*Spec.js']
+        }
       }
     },
     imagemin: {
@@ -132,6 +131,7 @@ module.exports = function(grunt) {
     if (!releaseType) {
       releaseType = 'patch';
     }
+
     grunt.task.run(['build']);
     grunt.task.run(['version::' + releaseType, 'exec:add', 'exec:commit', 'exec:push']);
   });
@@ -141,4 +141,3 @@ module.exports = function(grunt) {
     console.log('Grunt has run');
   });
 };
-
